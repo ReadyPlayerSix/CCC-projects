@@ -3,18 +3,54 @@
   <head>
     <meta charset="utf-8">
     <title>Astro Weight Calculator</title>
+    <link rel="stylesheet" href="css/styles.css">
   </head>
   <body>
-    <input id="user-weight" type="text" placeholder="Weight (lbs)" />
-
-    <select id="planets">
-      <option value="placeholder">placeholder</option>
-    </select>
+    <h1>Astro Weight Calculator</h1>
 
     <p id="output">This is a placeholder for output.</p>
 
-    <button id="calculate-button">Submit</button>
+    Enter your weight:<br>
+    <input id="user-weight" type="text" placeholder="Weight (lbs)"/><br>
+    <label>
+      <input type="radio" name="measurement" value="imperial" checked> lbs
+    </label>
+    <label>
+      <input type="radio" name="measurement" value="metric"> kg<br>
+    </label>
+    <br>
 
-    <script src="main.js" charset="utf-8"></script>
+    Choose an entity:<br>
+    <select required id="planets">
+      <option value="">Select here...</option>
+      <option value="pluto">Pluto</option>
+      <option value="neptune">Neptune</option>
+      <option value="uranus">Uranus</option>
+      <option value="saturn">Saturn</option>
+      <option value="jupiter">Jupiter</option>
+      <option value="mars">Mars</option>
+      <option value="moon">Moon</option>
+      <option value="earth">Earth</option>
+      <option value="venus">Venus</option>
+      <option value="mercury">Mercury</option>
+      <option value="Sun">Sun</option>
+    </select><br>
+
+    <button id="calculate-button">Reset</button>
+    <label>
+      <input type="checkbox" id="autosubmit"> Auto-Calculate
+    </label>
+
+    <div id="weight-log-section">
+      <div id="log-entries">
+
+      </div>
+
+      <div id="log-controls">
+        <button id="clear-log">Clear History</button>
+      </div>
+    </div>
+
+    <script src="js/main.js" charset="utf-8"></script>
   </body>
 </html>
