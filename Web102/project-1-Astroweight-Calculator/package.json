@@ -1,0 +1,16 @@
+{
+    "name": "project-js-astro-weight",
+    "version": "0.1.0",
+    "scripts": {
+        "start": "static -H \"{\\\"Cache-Control\\\": \\\"no-cache, must-revalidate\\\"}\"",
+        "test": "mocha test --exit"
+    },
+    "dependencies": {
+        "axios": "^0.27.2",
+        "chai": "^4.0.2",
+        "express": "^4.15.3",
+        "mocha": "^10.0.0",
+        "nightmare": "^2.8.0",
+        "node-static": "^0.7.9"
+    }
+}
