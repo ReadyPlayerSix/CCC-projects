@@ -1,56 +1,73 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8">
     <title>Astro Weight Calculator</title>
+
+    <!-- CSS and other head elements -->
     <link rel="stylesheet" href="css/styles.css">
+    <script src="js/main.js" defer></script>
   </head>
   <body>
-    <h1>Astro Weight Calculator</h1>
+    <header>
+      <h1>Astro Weight Calculator</h1>
+    </header>
 
-    <p id="output">This is a placeholder for output.</p>
+    <main>
+      <section class="weight-calculator">
+        <div class="result-container">
+          <p id="output">This is a placeholder for output.</p>
+        </div>
 
-    Enter your weight:<br>
-    <input id="user-weight" type="text" placeholder="Weight (lbs)"/><br>
-    <label>
-      <input type="radio" name="measurement" value="imperial" checked> lbs
-    </label>
-    <label>
-      <input type="radio" name="measurement" value="metric"> kg<br>
-    </label>
-    <br>
+        <form id="weight-form" class="input-container">
+          <label for="user-weight">Enter your weight:</label><br>
+          <input id="user-weight" type="number" placeholder="Weight (lbs)"/><br>
+          <label>
+            <input type="radio" name="measurement" value="imperial" checked> lbs
+          </label>
+          <label>
+            <input type="radio" name="measurement" value="metric"> kg<br>
+          </label>
+          <br>
 
-    Choose an entity:<br>
-    <select required id="planets">
-      <option value="">Select here...</option>
-      <option value="pluto">Pluto</option>
-      <option value="neptune">Neptune</option>
-      <option value="uranus">Uranus</option>
-      <option value="saturn">Saturn</option>
-      <option value="jupiter">Jupiter</option>
-      <option value="mars">Mars</option>
-      <option value="moon">Moon</option>
-      <option value="earth">Earth</option>
-      <option value="venus">Venus</option>
-      <option value="mercury">Mercury</option>
-      <option value="Sun">Sun</option>
-    </select><br>
+          <label for="planets">Choose an entity:</label><br>
+          <select required id="planets">
+            <option value="">Select here...</option>
+            <option value="pluto">Pluto</option>
+            <option value="neptune">Neptune</option>
+            <option value="uranus">Uranus</option>
+            <option value="saturn">Saturn</option>
+            <option value="jupiter">Jupiter</option>
+            <option value="mars">Mars</option>
+            <option value="moon">Moon</option>
+            <option value="earth">Earth</option>
+            <option value="venus">Venus</option>
+            <option value="mercury">Mercury</option>
+            <option value="Sun">Sun</option>
+          </select><br>
 
-    <button id="calculate-button">Reset</button>
-    <label>
-      <input type="checkbox" id="autosubmit"> Auto-Calculate
-    </label>
+          <button id="reset-button">Reset</button>
+          <button id="calculate-button">Calculate</button>
+          <label>
+            <input type="checkbox" id="autosubmit"> Auto-Calculate
+          </label>
+        </form>
 
-    <div id="weight-log-section">
-      <div id="log-entries">
+          <div id="weight-log-section">
+            <div id="log-entries">
 
-      </div>
+            </div>
 
-      <div id="log-controls">
-        <button id="clear-log">Clear History</button>
-      </div>
-    </div>
+            <div id="log-controls">
+              <button id="clear-log">Clear History</button>
+            </div>
+          </div>
 
-    <script src="js/main.js" charset="utf-8"></script>
+      </section>
+    </main>
+
+    <footer>
+      <p>Created by [Claro Runtal] through Creating Coding Careers | <a href="#">Source Code</a></p>
+    </footer>
   </body>
 </html>
