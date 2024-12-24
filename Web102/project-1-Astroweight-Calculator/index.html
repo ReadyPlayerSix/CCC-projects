@@ -20,31 +20,133 @@
         </div>
 
         <form id="weight-form" class="input-container">
-          <label for="user-weight">Enter your weight:</label><br>
-          <input id="user-weight" type="number" placeholder="Weight (lbs)"/><br>
-          <label>
-            <input type="radio" name="measurement" value="imperial" checked> lbs
-          </label>
-          <label>
-            <input type="radio" name="measurement" value="metric"> kg<br>
-          </label>
-          <br>
 
-          <label for="planets">Choose an entity:</label><br>
-          <select required id="planets">
-            <option value="">Select here...</option>
-            <option value="pluto">Pluto</option>
-            <option value="neptune">Neptune</option>
-            <option value="uranus">Uranus</option>
-            <option value="saturn">Saturn</option>
-            <option value="jupiter">Jupiter</option>
-            <option value="mars">Mars</option>
-            <option value="moon">Moon</option>
-            <option value="earth">Earth</option>
-            <option value="venus">Venus</option>
-            <option value="mercury">Mercury</option>
-            <option value="Sun">Sun</option>
-          </select><br>
+          <fieldset class="user-weight-input">
+            <legend>Enter weight:</legend>
+            <input id="user-weight" type="number" placeholder="Weight (lbs)"/>
+            <label>
+              <input type="radio" name="measurement" value="imperial" checked> lbs
+            </label>
+            <label>
+              <input type="radio" name="measurement" value="metric"> kg<br>
+            </label>
+          </fieldset>
+
+          <fieldset class="default-choices">
+            <legend>Choose an entity:</legend>
+            <select required id="planets">
+              <option value="">Select here...</option>
+              <option value="pluto">Pluto</option>
+              <option value="neptune">Neptune</option>
+              <option value="uranus">Uranus</option>
+              <option value="saturn">Saturn</option>
+              <option value="jupiter">Jupiter</option>
+              <option value="mars">Mars</option>
+              <option value="moon">Moon</option>
+              <option value="earth">Earth</option>
+              <option value="venus">Venus</option>
+              <option value="mercury">Mercury</option>
+              <option value="Sun">Sun</option>
+            </select>
+          </fieldset>
+
+          <fieldset class="entity-filter-options">
+            <legend>Filter entities by:</legend>
+            <label>
+              <input type="checkbox" id="terrestrial" checked> Terrestrial
+              <input type="checkbox" id="gas-giants" checked> Gas giants
+              <input type="checkbox" id="ice-giants" checked> Ice giants
+              <input type="checkbox" id="dwarf-planets" checked> Dwarf planets
+              <input type="checkbox" id="stars" checked> Stars
+              <input type="checkbox" id="natural-satellites" checked> Natural satellites
+              <input type="checkbox" id="custom-entities" checked> Custom Entities
+            </label>
+          </fieldset>
+          
+          <fieldset class="custom-entity-mode">
+            <legend>Input Mode:</legend>
+            <label>
+              <input type="radio" name="input-mode" value="easy" checked> Easy Entry
+              <span class="mode-description">(Use simple gravity multiplier)</span>
+            </label>
+            <label>
+              <input type="radio" name="input-mode" value="advanced"> Advanced Options
+              <span class="mode-description">(Calculate from mass and radius)</span>
+            </label>
+          </fieldset>
+
+          <fieldset class="custom-entity-inputs">
+            <legend>Custom Entity Creation:</legend>
+            <label for="custom-entity">Entity name:</label>
+            <input id="custom-entity" type="text" placeholder="Enter name" required/>
+            <br><br>
+
+            <div class="easy-mode-inputs">
+              <div class="slider-container multiplier-slider">
+                <label for="custom-multiplier">Surface Gravity (relative to Earth)</label>
+                <div class="slider-track">
+                  <input type="range"
+                         id="custom-multiplier"
+                         min="0"
+                         max="100"
+                         value="1"
+                         step="1">
+                  <div class="slider-labels">
+                    <span class="label" style="left: 0%">Moon (0.166)</span>
+                    <span class="label" style="left: 25%">Mars (0.377)</span>
+                    <span class="label" style="left: 50%">Earth (1.0)</span>
+                    <span class="label" style="left: 75%">Neptune (1.14)</span>
+                    <span class="label" style="left: 100%">Jupiter (2.4)</span>
+                  </div>
+                </div>
+                <output for="custom-multiplier" id="multiplier-value">1.0 Earth gravity</output>
+              </div>
+            </div><br>
+
+            <div class="advanced-mode-inputs">
+              <div class="slider-container mass-slider">
+                <label for="custom-mass">Mass (relative to Earth)</label>
+                <div class="slider-track">
+                  <input type="range"
+                        id="custom-mass"
+                        min="0"
+                        max="100"
+                        value="1"
+                        step="1">
+                  <div class="slider-labels">
+                    <span class="label" style="left: 0%">Moon</span>
+                    <span class="label" style="left: 25%">Mars</span>
+                    <span class="label" style="left: 50%">Earth</span>
+                    <span class="label" style="left: 75%">Neptune</span>
+                    <span class="label" style="left: 100%">Jupiter</span>
+                  </div>
+                </div>
+                <output for="custom-mass" id="mass-value">1 Earth mass</output>
+              </div><br>
+
+              <div class="slider-container radius-slider">
+                <label for="custom-radius">Radius (relative to Earth)</label>
+                <div class="slider-track">
+                  <input type="range"
+                        id="custom-radius"
+                        min="0"
+                        max="100"
+                        value="1"
+                        step="1">
+                  <div class="slider-labels">
+                    <span class="label" style="left: 0%">Moon</span>
+                    <span class="label" style="left: 25%">Mars</span>
+                    <span class="label" style="left: 50%">Earth</span>
+                    <span class="label" style="left: 75%">Neptune</span>
+                    <span class="label" style="left: 100%">Jupiter</span>
+                  </div>
+                </div>
+                <output for="custom-radius" id="radius-value">1 Earth Radius</output>
+              </div><br>
+              <button id="add-custom">Add entity</button>
+            </div>
+          </fieldset>
+          <br>
 
           <button id="reset-button">Reset</button>
           <button id="calculate-button">Calculate</button>
@@ -55,9 +157,8 @@
 
           <div id="weight-log-section">
             <div id="log-entries">
-
+              <!-- recorded calculations -->
             </div>
-
             <div id="log-controls">
               <button id="clear-log">Clear History</button>
             </div>
@@ -67,7 +168,7 @@
     </main>
 
     <footer>
-      <p>Created by [Claro Runtal] through Creating Coding Careers | <a href="#">Source Code</a></p>
+      <p>Created by Claro Runtal through Creating Coding Careers | <a href="#">Source Code</a></p>
     </footer>
   </body>
 </html>
