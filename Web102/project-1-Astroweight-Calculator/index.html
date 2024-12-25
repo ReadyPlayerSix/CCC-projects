@@ -14,22 +14,23 @@
     </header>
 
     <main>
-      <section class="weight-calculator">
-        <div class="result-container">
-          <p id="output">This is a placeholder for output.</p>
-        </div>
-
+      <div class="calculator-container">
+      <section class="input-section">
         <form id="weight-form" class="input-container">
 
           <fieldset class="user-weight-input">
             <legend>Enter weight:</legend>
-            <input id="user-weight" type="number" placeholder="Weight (lbs)"/>
-            <label>
-              <input type="radio" name="measurement" value="imperial" checked> lbs
-            </label>
-            <label>
-              <input type="radio" name="measurement" value="metric"> kg<br>
-            </label>
+            <div class="weight-input-container">
+              <div class="weight-input-group">
+                <input id="user-weight" type="number" placeholder="Weight (lbs)" aria-label="Weight in pounds"/>
+                <label for="user-weight">lbs</label>
+              </div>
+              <div class="weight-separator">or</div>
+              <div class="weight-input-group">
+                <input id="user-weight-kgs" type="number" placeholder="Weight (kgs)" aria-label="Weight in kilograms"/>
+                <label for="user-weight-kgs">kgs</label>
+              </div>
+            </div>
           </fieldset>
 
           <fieldset class="default-choices">
@@ -46,7 +47,7 @@
               <option value="earth">Earth</option>
               <option value="venus">Venus</option>
               <option value="mercury">Mercury</option>
-              <option value="Sun">Sun</option>
+              <option value="sun">Sun</option>
             </select>
           </fieldset>
 
@@ -154,6 +155,13 @@
             <input type="checkbox" id="autosubmit"> Auto-Calculate
           </label>
         </form>
+      </section>
+
+      <section class="output-section">
+        <!-- Test requirement -->     
+        <div class="result-container visually-hidden">
+          <p id="output">This is a placeholder for output</p>
+        </div>
 
           <div id="weight-log-section">
             <div id="log-entries">
@@ -165,6 +173,7 @@
           </div>
 
       </section>
+      </div>
     </main>
 
     <footer>

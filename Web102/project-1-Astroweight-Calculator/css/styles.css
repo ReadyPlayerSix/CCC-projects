@@ -1,4 +1,157 @@
 /* styles.css */
+/* basic reset and container styling */
 body {
-    background-color: #6a8797;
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 20px;
+    /* background-color: #6a8797; */
+    background-color: #f0f0f0;
+}
+
+/* Two-column layout container */
+.calculator-container {
+    display: flex;
+    gap: 20px;
+    max-width: 1800px;  /* Adjust based on your needs */
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Left column: Input section */
+.input-section {
+    flex: 1;
+    min-width: 300px;  /* Minimum width to prevent squishing */
+}
+
+/* Right column: Output section */
+.output-section {
+    flex: 1;
+    min-width: 300px;
+    display: flex;
+    flex-direction: column;
+}
+
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+}
+
+/* Make the log section fill available height */
+#weight-log-section {
+    flex-grow: 1;
+    min-height: 400px;  /* Minimum height to ensure visibility */
+}
+
+/* Responsive layout for smaller screens */
+@media (max-width: 768px) {
+    .calculator-container {
+        flex-direction: column;
+    }
+    
+    .input-section,
+    .output-section {
+        width: 100%;
+    }
+}
+
+/* main calculator container */
+.weight-calculator {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* form styling */ 
+.input-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* input fields styling */
+input[type="number"] {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 150px;
+}
+
+/* select dropdown styling */
+select {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 200px;
+}
+
+/* Button styling */
+button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+/* Command log styling to make it look like a terminal */
+#weight-log-section {
+    margin-top: 20px;
+    background-color: #1e1e1e;
+    color: #00ff00;
+    padding: 15px;
+    border-radius: 4px;
+    font-family: 'Courier New', monospace;
+    height: 200px;
+    overflow-y: auto;
+}
+
+/* Log entry styling */
+.log-entry {
+    margin: 5px 0;
+    font-size: 14px;
+}
+
+/* Different types of log messages */
+.log-system { color: #ffffff; }
+.log-success { color: #00ff00; }
+.log-error { color: #ff0000; }
+.log-input { color: #ffff00; }
+.log-result { color: #00ffff; }
+.log-processing { color: #ff00ff; }
+
+/* Result display styling */
+#output {
+    margin: 20px 0;
+    padding: 15px;
+    background-color: #e9ecef;
+    border-radius: 4px;
+    font-size: 18px;
+    text-align: center;
+}
+
+/* Fieldset styling */
+fieldset {
+    border: 1px solid #ddd;
+    padding: 15px;
+    margin: 10px 0;
+    border-radius: 4px;
+}
+
+legend {
+    padding: 0 10px;
+    font-weight: bold;
 }
