@@ -4,8 +4,8 @@ body {
     font-family: 'Arial', sans-serif;
     margin: 0;
     padding: 20px;
-    /* background-color: #6a8797; */
-    background-color: #f0f0f0;
+    background-color: #6a8797;
+    /* background-color: #f0f0f0; */
 }
 
 /* Two-column layout container */
@@ -14,7 +14,7 @@ body {
     gap: 20px;
     max-width: 1800px;  /* Adjust based on your needs */
     margin: 0 auto;
-    padding: 20px;
+    padding: 5px;
 }
 
 /* Left column: Input section */

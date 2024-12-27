@@ -9,10 +9,6 @@
     <script src="js/main.js" defer></script>
   </head>
   <body>
-    <header>
-      <h1>Astro Weight Calculator</h1>
-    </header>
-
     <main>
       <div class="calculator-container">
       <section class="input-section">
@@ -37,22 +33,18 @@
             <legend>Choose an entity:</legend>
             <select required id="planets">
               <option value="">Select here...</option>
-              <option value="pluto">Pluto</option>
-              <option value="neptune">Neptune</option>
-              <option value="uranus">Uranus</option>
-              <option value="saturn">Saturn</option>
-              <option value="jupiter">Jupiter</option>
-              <option value="mars">Mars</option>
-              <option value="moon">Moon</option>
-              <option value="earth">Earth</option>
-              <option value="venus">Venus</option>
-              <option value="mercury">Mercury</option>
-              <option value="sun">Sun</option>
-            </select>
-          </fieldset>
-
-          <fieldset class="entity-filter-options">
-            <legend>Filter entities by:</legend>
+              <option value="Pluto">Pluto</option>
+              <option value="Neptune">Neptune</option>
+              <option value="Uranus">Uranus</option>
+              <option value="Saturn">Saturn</option>
+              <option value="Jupiter">Jupiter</option>
+              <option value="Mars">Mars</option>
+              <option value="Moon">Moon</option>
+              <option value="Earth">Earth</option>
+              <option value="Venus">Venus</option>
+              <option value="Mercury">Mercury</option>
+              <option value="Sun">Sun</option>
+            </select><br><br>
             <label>
               <input type="checkbox" id="terrestrial" checked> Terrestrial
               <input type="checkbox" id="gas-giants" checked> Gas giants
@@ -63,9 +55,15 @@
               <input type="checkbox" id="custom-entities" checked> Custom Entities
             </label>
           </fieldset>
+
+          <div id="control-buttons">
+            <button id="reset-button">Reset</button>
+            <button id="calculate-button">Calculate</button>
+            <button id="clear-log">Clear History</button>
+          </div>
           
           <fieldset class="custom-entity-mode">
-            <legend>Input Mode:</legend>
+            <legend>Custom Entity Input Mode:</legend>
             <label>
               <input type="radio" name="input-mode" value="easy" checked> Easy Entry
               <span class="mode-description">(Use simple gravity multiplier)</span>
@@ -147,31 +145,19 @@
               <button id="add-custom">Add entity</button>
             </div>
           </fieldset>
-          <br>
-
-          <button id="reset-button">Reset</button>
-          <button id="calculate-button">Calculate</button>
-          <label>
-            <input type="checkbox" id="autosubmit"> Auto-Calculate
-          </label>
         </form>
       </section>
 
       <section class="output-section">
         <!-- Test requirement -->     
         <div class="result-container visually-hidden">
-          <p id="output">This is a placeholder for output</p>
+          <p id="output"></p>
         </div>
-
           <div id="weight-log-section">
             <div id="log-entries">
               <!-- recorded calculations -->
             </div>
-            <div id="log-controls">
-              <button id="clear-log">Clear History</button>
-            </div>
           </div>
-
       </section>
       </div>
     </main>

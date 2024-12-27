@@ -17,9 +17,84 @@ const state = {
     logHistory: []
 };
 
+/*
+Future Enhancement Note:
+A processing animation feature was developed to create an educational "mission control" 
+experience, simulating computer processing time with animated dots in the command log. 
+While the animation enhanced user engagement, it was removed to maintain compatibility 
+with the automated tests which expect immediate output. The animation code has been 
+preserved for future implementation in a version not constrained by immediate response 
+requirements.
+
+Additional comments and notes are added throughout to aide me in future referencing.
+*/
+
 // unit conversion functions used thoroughout the application
 const convertKgToLbs = (kg) => kg * 2.20462;
 const convertLbsToKg = (lbs) => lbs / 2.20462;
+
+function calculateWeight(weight, planetName) {
+    const planet = state.planets.find(([name]) => 
+        name.toLowerCase() === planetName.toLowerCase()
+    );
+    
+    if (!planet) return null;
+    
+    const multiplier = planet[1];
+    return Number((weight * multiplier).toFixed(2));
+}
+
+// function to handle the processing animation
+function simulateProcessing(callback) {
+    const dots = ['.', '..', '...'];
+    let index = 0;
+    
+    // Start with the initial message
+    commandLog('PROCESSING CALCULATION', 'processing');
+    
+    // Create an interval that updates every 400ms
+    const processingInterval = setInterval(() => {
+        commandLog(`CALCULATING${dots[index]}`, 'processing');
+        index = (index + 1) % dots.length;
+    }, 400);
+
+    // After 1.2 seconds (3 dots cycles), clear the interval and continue
+    setTimeout(() => {
+        clearInterval(processingInterval);
+        callback();
+    }, 1200);
+}
+
+// function to handle click events
+function handleClickEvent(e) {
+    if (e) e.preventDefault();
+    
+    const weightInput = document.getElementById('user-weight');
+    const planetSelect = document.getElementById('planets');
+    const outputElement = document.getElementById('output');
+    
+    const weight = parseFloat(weightInput.value);
+    const planetName = planetSelect.value;
+    
+    if (!isNaN(weight) && planetName) {
+        const result = calculateWeight(weight, planetName);
+        if (result !== null) {
+            const outputText = `If you were on ${planetName}, you would weigh ${result}lbs!`;
+            outputElement.innerText = outputText;
+            commandLog(`CALCULATION COMPLETE: ${outputText}`, 'success');
+            commandLog('READY FOR NEXT CALCULATION', 'system');
+        } else {
+            commandLog('ERROR: Invalid calculation result', 'error');
+        }
+    } else {
+        if (isNaN(weight)) {
+            commandLog('ERROR: Please enter a valid weight', 'error');
+        }
+        if (!planetName) {
+            commandLog('ERROR: Please select a planet', 'error');
+        }
+    }
+}
 
 // function to handle commander center style logging
 function commandLog(message, type = 'info') {
@@ -54,26 +129,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const lbsInput = document.getElementById('user-weight');
     const kgsInput = document.getElementById('user-weight-kgs');
     const planetSelect = document.getElementById('planets');
-    const autoCalculateCheckbox = document.getElementById('autosubmit');
-
-    // function to check if auto-calc is on
-    function shouldAutoCalculate() {
-        return autoCalculateCheckbox.checked;
-    }
-
-    // function that triggers auto-calc
-    function autoCalculate() {
-        if (shouldAutoCalculate()) {
-            // simulate a click on the exisiting calculation
-            document.getElementById('calculate-button').click();
-        }
-    }
-
-    // start up message
+    
+    // Initialize with a welcome message
     commandLog('ASTRO WEIGHT CALCULATOR SYSTEMS INITIALIZING...', 'system');
     commandLog('ALL SYSTEMS NOMINAL', 'success');
 
-    // handle pounds input
+    // Handle pounds input with enhanced logging
     lbsInput.addEventListener('input', (e) => {
         const lbs = parseFloat(e.target.value);
         if (!isNaN(lbs)) {
@@ -82,12 +143,11 @@ document.addEventListener('DOMContentLoaded', () => {
             if (kgsInput.value !== kgs.toFixed(2)) {
                 kgsInput.value = kgs.toFixed(2);
                 commandLog(`CONVERSION COMPLETE: ${kgs.toFixed(2)} KG`, 'result');
-                autoCalculate();
             }
         }
     });
 
-    // handle kilograms input
+    // Handle kilograms input with enhanced logging
     kgsInput.addEventListener('input', (e) => {
         const kgs = parseFloat(e.target.value);
         if (!isNaN(kgs)) {
@@ -96,110 +156,30 @@ document.addEventListener('DOMContentLoaded', () => {
             if (lbsInput.value !== lbs.toFixed(2)) {
                 lbsInput.value = lbs.toFixed(2);
                 commandLog(`CONVERSION COMPLETE: ${lbs.toFixed(2)} LBS`, 'result');
-                autoCalculate();
             }
         }
     });
 
-    // handle listener for planet selection changes
+    // Handle planet selection changes
     planetSelect.addEventListener('change', () => {
-        commandLog(`CELESTIAL BODY SELECTION CHANGED TO: ${planetSelect.value.toUpperCase()}`, 'info');
-        autoCalculate();
+        const selectedPlanet = planetSelect.value;
+        if (selectedPlanet) {
+            commandLog(`CELESTIAL BODY SELECTED: ${selectedPlanet.toUpperCase()}`, 'info');
+        }
     });
 
-    document.getElementById('calculate-button').addEventListener('click', handleClickEvent);
+    // Set up calculate button with enhanced logging
+    const calculateButton = document.getElementById('calculate-button');
+    if (calculateButton) {
+        calculateButton.onclick = (e) => {
+            commandLog('INITIATING WEIGHT CALCULATION...', 'processing');
+            handleClickEvent(e);
+        };
+    }
 });
-
-function calculateWeight(weight, planetName) {
-    // check for weight value
-    if (weight === undefined || weight === null || weight === '') {
-        commandLog('ERROR: NO WEIGHT VALUE PROVIDED', 'error');
-        return null;
-    }
-
-    // check if weight is valid number
-    if (isNaN(weight) || weight < 0) {
-        commandLog('ERROR: WEIGHT MUST BE A VALID POSITIVE NUMBER', 'error');
-        return null;
-    }
-
-    // check if planetName was selected
-    if (!planetName) {
-        commandLog('ERROR: NO CELESTIAL BODY SELECTED', 'error');
-        return null;
-    }
-
-    // find planet's gravity multiplier from our state
-    const planet = state.planets.find(p => p[0].toLowerCase() === planetName.toLowerCase());
-
-    if (!planet) {
-        commandLog(`ERROR: UNABLE TO LOCATE CELESTIAL BODY "${planetName}"`, 'error');
-        return null;
-    }
-
-    const gravityMultiplier = planet[1];
-    const weightOnPlanet = weight * gravityMultiplier;
-
-    // mission control style logging
-    commandLog(`CALCULATING WEIGHT FOR CELESTIAL BODY: ${planet[0]}`, 'processing');
-    commandLog(`GRAVITY MULTIPLIER: ${gravityMultiplier}x EARTH GRAVITY`, 'info');
-    commandLog(`COMPUTATION COMPLETE: ${weight} x ${gravityMultiplier} = ${weightOnPlanet.toFixed(2)}`, 'result');
-
-    return Number(weightOnPlanet.toFixed(2));
-    // Code to return the correct weight
-}
-
-function handleClickEvent(e) {
-
-    // prevent form submission
-    if (e) e.preventDefault();
-
-    const lbsInput = document.getElementById('user-weight');
-    const kgsInput = document.getElementById('user-weight-kgs');
-    const planetSelect = document.getElementById('planets');
-    const outputElement = document.getElementById('output');
-
-    let weight, unit;
-    if (lbsInput.value) {
-        weight = parseFloat(lbsInput.value);
-        unit = 'lbs';
-    } else if (kgsInput.value) {
-        weight = parseFloat(kgsInput.value);
-        unit = 'kgs';
-    } else {
-        commandLog('ERROR: Please enter a weight value', 'error');
-        return;
-    }
-
-    // get selected planet
-    const planetName = planetSelect.value;
-
-    // use calculateWeight function
-    const result = calculateWeight(weight, planetName);
-
-    // update display if valid result
-    if (result !== null) {
-        outputElement.textContent = `If you were on ${planetName}, you would weigh ${result}${unit}!`;
-
-        commandLog('CALCULATION SEQUENCE COMPLETE', 'success');
-
-        const formattedPlanet = planetName ? planetName.toUpperCase() : planetName;
-        commandLog(`Your weight on ${formattedPlanet} would be ${result}${unit}!`, 'result');
-    }
-}
-
-
-
-// set the #calculate-button element's onclick method to use the handleClickEvent function
-// make it look nice by attaching a style.css file to your index.html and writing some basic styling
-// feel free to add classes and id's to the HTML elements as you need
-// import a google font and use it for some or all of the text on your page
 
 // bonus challenge
 // reverse the drop down order so that the sun is first
 
 // personal notes
-// include filter options for showing drop down order in distance from the sun
-// include toggle filter option for dwarf planets
-// include menu for adding new planets, name and weight multiplier
 // try styling with a different style library such as Bulma or Materialize for a modern look
