@@ -14,17 +14,17 @@
       <section class="input-section">
         <form id="weight-form" class="input-container">
 
-          <fieldset class="user-weight-input">
-            <legend>Enter weight:</legend>
+          <fieldset class="user-weight-input terminal-style">
+            <legend>ENTER WEIGHT:</legend>
             <div class="weight-input-container">
               <div class="weight-input-group">
-                <input id="user-weight" type="number" placeholder="Weight (lbs)" aria-label="Weight in pounds"/>
-                <label for="user-weight">lbs</label>
+                <input id="user-weight" type="number" placeholder="_" aria-label="Weight in pounds"/>
+                <label for="user-weight">LBS</label>
               </div>
-              <div class="weight-separator">or</div>
+              <div class="weight-separator">OR</div>
               <div class="weight-input-group">
-                <input id="user-weight-kgs" type="number" placeholder="Weight (kgs)" aria-label="Weight in kilograms"/>
-                <label for="user-weight-kgs">kgs</label>
+                <input id="user-weight-kgs" type="number" placeholder="_" aria-label="Weight in kilograms"/>
+                <label for="user-weight-kgs">KGS</label>
               </div>
             </div>
           </fieldset>
@@ -45,15 +45,42 @@
               <option value="Mercury">Mercury</option>
               <option value="Sun">Sun</option>
             </select><br><br>
-            <label>
-              <input type="checkbox" id="terrestrial" checked> Terrestrial
-              <input type="checkbox" id="gas-giants" checked> Gas giants
-              <input type="checkbox" id="ice-giants" checked> Ice giants
-              <input type="checkbox" id="dwarf-planets" checked> Dwarf planets
-              <input type="checkbox" id="stars" checked> Stars
-              <input type="checkbox" id="natural-satellites" checked> Natural satellites
-              <input type="checkbox" id="custom-entities" checked> Custom Entities
-            </label>
+          </fieldset>
+          <fieldset class="terminal-style">
+            <legend>Celestial Body Options</legend>
+            <div>
+              <input type="checkbox" id="naturalSort">
+              <label for="naturalSort">Sort Entities by Natural Order</label>
+            </div>
+            <small>Note: Natural satellites and custom entities will appear at the end of the list</small>
+            <div>
+              <input type="checkbox" id="terrestrial" checked>
+              <label for="terrestrial">Terrestrial</label>
+            </div>
+            <div>
+              <input type="checkbox" id="gasGiants" checked>
+              <label for="gas-giants">Gas giants</label>
+            </div>
+            <div>
+              <input type="checkbox" id="iceGiants" checked>
+              <label for="ice-giants">Ice Giants</label>
+            </div>
+            <div>
+              <input type="checkbox" id="dwarfPlanets" checked>
+              <label for="dwarf-planets">Dwarf Planets</label>
+            </div>
+            <div>
+              <input type="checkbox" id="stars" checked>
+              <label for="stars">Stars</label>
+            </div>
+            <div>
+              <input type="checkbox" id="naturalSatellites" checked>
+              <label for="natural-satellites">Natural Satellites</label>
+            </div>
+            <div>
+              <input type="checkbox" id="custom-entities" checked>
+              <label for="custom-entities">Custom Entities</label>
+            </div>
           </fieldset>
 
           <div id="control-buttons">
@@ -74,7 +101,7 @@
             </label>
           </fieldset>
 
-          <fieldset class="custom-entity-inputs">
+          <fieldset class="custom-entity-inputs terminal-style">
             <legend>Custom Entity Creation:</legend>
             <label for="custom-entity">Entity name:</label>
             <input id="custom-entity" type="text" placeholder="Enter name" required/>
