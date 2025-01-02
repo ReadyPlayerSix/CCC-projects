@@ -1,73 +1,12 @@
-// Global state management
-const state = {
-  planets: [
-    ["Pluto", 0.06],
-    ["Neptune", 1.148],
-    ["Uranus", 0.917],
-    ["Saturn", 1.139],
-    ["Jupiter", 2.64],
-    ["Mars", 0.3895],
-    ["Moon", 0.1655],
-    ["Earth", 1],
-    ["Venus", 0.9032],
-    ["Mercury", 0.377],
-    ["Sun", 27.9],
-  ],
-
-  categories: {
-    terrestrial: ["Mercury", "Venus", "Earth", "Mars"],
-    gasGiants: ["Jupiter", "Saturn"],
-    iceGiants: ["Uranus", "Neptune"],
-    dwarfPlanets: ["Pluto"],
-    stars: ["Sun"],
-    naturalSatellites: ["Moon"],
-    customEntities: [],
-  },
-
-  bodyCategories: {
-    Mercury: ["terrestrial"],
-    Venus: ["terrestrial"],
-    Earth: ["terrestrial"],
-    Mars: ["terrestrial"],
-    Jupiter: ["gasGiants"],
-    Saturn: ["gasGiants"],
-    Uranus: ["iceGiants"],
-    Neptune: ["iceGiants"],
-    Pluto: ["dwarfPlanets"],
-    Sun: ["stars"],
-    Moon: ["naturalSatellites"],
-  },
-
-  activeFilters: {
-    terrestrial: true,
-    gasGiants: true,
-    iceGiants: true,
-    dwarfPlanets: true,
-    stars: true,
-    naturalSatellites: true,
-    customEntities: true,
-  },
-
-  naturalSort: false,
-
-  naturalOrder: [
-    "Sun",
-    "Mercury",
-    "Venus",
-    "Earth",
-    "Mars",
-    "Jupiter",
-    "Saturn",
-    "Uranus",
-    "Neptune",
-    "Pluto",
-  ],
-
-  logHistory: [],
-};
-
+// =====================
+// FUTURE ENHANCEMENTS
+// =====================
 /*
-Future Enhancement Note:
+This section contains ideas and code for future improvements to the application.
+Each enhancement is documented with its intended purpose and any existing implementation.
+
+1. Processing Animation Enhancement
+--------------------------------
 A processing animation feature was developed to create an educational "mission control" 
 experience, simulating computer processing time with animated dots in the command log. 
 While the animation enhanced user engagement, it was removed to maintain compatibility 
@@ -75,25 +14,8 @@ with the automated tests which expect immediate output. The animation code has b
 preserved for future implementation in a version not constrained by immediate response 
 requirements.
 
-Additional comments and notes are added throughout to aide me in future referencing.
+Implementation:
 */
-
-// unit conversion functions used thoroughout the application
-const convertKgToLbs = (kg) => kg * 2.20462;
-const convertLbsToKg = (lbs) => lbs / 2.20462;
-
-function calculateWeight(weight, planetName) {
-  const planet = state.planets.find(
-    ([name]) => name.toLowerCase() === planetName.toLowerCase()
-  );
-
-  if (!planet) return null;
-
-  const multiplier = planet[1];
-  return Number((weight * multiplier).toFixed(2));
-}
-
-// function to handle the processing animation
 function simulateProcessing(callback) {
   const dots = [".", "..", "..."];
   let index = 0;
@@ -114,7 +36,102 @@ function simulateProcessing(callback) {
   }, 1200);
 }
 
-// function to handle click events
+// =====================
+// STATE MANAGEMENT
+// =====================
+const state = {
+  planets: [
+    ["Pluto", 0.06],
+    ["Neptune", 1.148],
+    ["Uranus", 0.917],
+    ["Saturn", 1.139],
+    ["Jupiter", 2.64],
+    ["Mars", 0.3895],
+    ["Moon", 0.1655],
+    ["Earth", 1],
+    ["Venus", 0.9032],
+    ["Mercury", 0.377],
+    ["Sun", 27.9],
+  ],
+  categories: {
+    terrestrial: ["Mercury", "Venus", "Earth", "Mars"],
+    gasGiants: ["Jupiter", "Saturn"],
+    iceGiants: ["Uranus", "Neptune"],
+    dwarfPlanets: ["Pluto"],
+    stars: ["Sun"],
+    naturalSatellites: ["Moon"],
+    customEntities: [],
+  },
+  bodyCategories: {
+    Mercury: ["terrestrial"],
+    Venus: ["terrestrial"],
+    Earth: ["terrestrial"],
+    Mars: ["terrestrial"],
+    Jupiter: ["gasGiants"],
+    Saturn: ["gasGiants"],
+    Uranus: ["iceGiants"],
+    Neptune: ["iceGiants"],
+    Pluto: ["dwarfPlanets"],
+    Sun: ["stars"],
+    Moon: ["naturalSatellites"],
+  },
+  activeFilters: {
+    terrestrial: true,
+    gasGiants: true,
+    iceGiants: true,
+    dwarfPlanets: true,
+    stars: true,
+    naturalSatellites: true,
+    customEntities: true,
+  },
+  naturalSort: false,
+  naturalOrder: [
+    "Sun",
+    "Mercury",
+    "Venus",
+    "Earth",
+    "Mars",
+    "Jupiter",
+    "Saturn",
+    "Uranus",
+    "Neptune",
+    "Pluto",
+  ],
+  logHistory: [],
+};
+
+// =====================
+// UTILITY FUNCTIONS
+// =====================
+const convertKgToLbs = (kg) => kg * 2.20462;
+const convertLbsToKg = (lbs) => lbs / 2.20462;
+
+function calculateWeight(weight, planetName) {
+  const planet = state.planets.find(
+    ([name]) => name.toLowerCase() === planetName.toLowerCase()
+  );
+  if (!planet) return null;
+  const multiplier = planet[1];
+  return Number((weight * multiplier).toFixed(2));
+}
+
+function commandLog(message, type = "info") {
+  const logEntries = document.getElementById("log-entries");
+  const logEntry = document.createElement("div");
+  const timestamp = new Date().toLocaleTimeString("en-US", { hour12: false });
+
+  logEntry.className = `log-entry log-${type}`;
+  logEntry.innerHTML = `<span class="log-timestamp">[${timestamp}]</span> <span class="log-message">${message}</span>`;
+
+  logEntries.appendChild(logEntry);
+  logEntries.scrollTop = logEntries.scrollHeight;
+
+  state.logHistory.push({ timestamp, message, type });
+}
+
+// =====================
+// EVENT HANDLERS
+// =====================
 function handleClickEvent(e) {
   if (e) e.preventDefault();
 
@@ -136,98 +153,28 @@ function handleClickEvent(e) {
       commandLog("ERROR: Invalid calculation result", "error");
     }
   } else {
-    if (isNaN(weight)) {
+    if (isNaN(weight))
       commandLog("ERROR: Please enter a valid weight", "error");
-    }
-    if (!planetName) {
-      commandLog("ERROR: Please select a planet", "error");
-    }
+    if (!planetName) commandLog("ERROR: Please select a planet", "error");
   }
 }
 
-function updateDropdownOptions() {
-  const planetSelect = document.getElementById("planets");
-  const currentValue = planetSelect.value;
-
-  // clear exisiting options except the default "select here..."
-  while (planetSelect.options.length > 1) {
-    planetSelect.remove(1);
-  }
-
-  // this gets all visible celestial bodies based on active filters
-  const visibleBodies = new Set();
-  Object.entries(state.activeFilters).forEach(([category, isActive]) => {
-    if (isActive && state.categories[category]) {
-      state.categories[category].forEach((body) => visibleBodies.add(body));
-    }
-  });
-
-  let bodiesArray = Array.from(visibleBodies);
-
-  if (state.naturalSort) {
-    bodiesArray.sort((a, b) => {
-      // grab the index from natural orders array
-      const indexA = state.naturalOrder.indexOf(a);
-      const indexB = state.naturalOrder.indexOf(b);
-
-      if (indexA !== -1 && indexB !== -1) {
-        return indexA - indexB;
-      }
-
-      // if only one body is in the correct order then put the other at the end
-      if (indexA !== -1) return -1;
-      if (indexB !== -1) return 1;
-
-      // if neither are in order push them back
-      return a.localeCompare(b);
-    });
-  } else {
-    // default alphabetical string
-    bodiesArray.sort();
-  }
-
-  // add sorted options to dropdown
-  bodiesArray.forEach((body) => {
-    const option = new Option(body, body);
-    planetSelect.add(option);
-  });
-
-  // Restore previous selection if it's still available
-  if (
-    Array.from(planetSelect.options).some(
-      (option) => option.value === currentValue
-    )
-  ) {
-    planetSelect.value = currentValue;
-  } else {
-    planetSelect.selectedIndex = 0; // Select the default option
-    commandLog("NOTICE: Previous selection no longer available", "system");
-  }
-}
-
-// function to handle filter checkbox changes
 function handleFilterChange(event) {
   const checkbox = event.target;
-  const category = checkbox.id; // checkbox ID must match category name
+  const category = checkbox.id;
   const isChecked = checkbox.checked;
 
-  // update state
   state.activeFilters[category] = isChecked;
-
-  // log the change
   commandLog(`FILTER PROCESSING: ${category.toUpperCase()}`, "processing");
 
   if (!isChecked) {
-    // log the celestial bodies that are hidden
     const hiddenBodies = state.categories[category];
     commandLog(`REMOVED: ${hiddenBodies.join(", ")}`, "success");
   } else {
-    // log which bodies are being shown
     const shownBodies = state.categories[category];
     commandLog(`ADDED: ${shownBodies.join(", ")}`, "success");
   }
 
-  // update the dropdown
   updateDropdownOptions();
 }
 
@@ -240,9 +187,106 @@ function handleNaturalSortChange(event) {
   updateDropdownOptions();
 }
 
-// function to initilize filter event listener
-function initializerFilters() {
-  // event listerners for each filter checkbox
+function handleAdvancedModeToggle(event) {
+  const advancedInputs = document.querySelector(".advanced-inputs");
+  const basicInputs = document.querySelector(".basic-inputs");
+  const customMassInput = document.getElementById("custom-mass");
+  const customRadiusInput = document.getElementById("custom-radius");
+
+  if (event.target.checked) {
+    advancedInputs.style.opacity = "1";
+    advancedInputs.style.pointerEvents = "auto";
+    customMassInput.disabled = false;
+    customRadiusInput.disabled = false;
+    basicInputs.style.opacity = "0.5";
+    basicInputs.style.pointerEvents = "none";
+  } else {
+    advancedInputs.style.opacity = "0.5";
+    advancedInputs.style.pointerEvents = "none";
+    customMassInput.disabled = true;
+    customRadiusInput.disabled = true;
+    basicInputs.style.opacity = "1";
+    basicInputs.style.pointerEvents = "auto";
+  }
+}
+
+function handleSliderInput(event) {
+  const slider = event.target;
+  const output = document.getElementById(`${slider.id}-value`);
+
+  let displayValue;
+  switch (slider.id) {
+    case "custom-multiplier":
+      displayValue = `${slider.value} Earth gravity`;
+      break;
+    case "custom-mass":
+      displayValue = `${slider.value} Earth mass`;
+      break;
+    case "custom-radius":
+      displayValue = `${slider.value} Earth radius`;
+      break;
+  }
+
+  if (output && displayValue) {
+    output.textContent = displayValue;
+  }
+}
+
+// =====================
+// UI UPDATE FUNCTIONS
+// =====================
+function updateDropdownOptions() {
+  const planetSelect = document.getElementById("planets");
+  const currentValue = planetSelect.value;
+
+  while (planetSelect.options.length > 1) {
+    planetSelect.remove(1);
+  }
+
+  const visibleBodies = new Set();
+  Object.entries(state.activeFilters).forEach(([category, isActive]) => {
+    if (isActive && state.categories[category]) {
+      state.categories[category].forEach((body) => visibleBodies.add(body));
+    }
+  });
+
+  let bodiesArray = Array.from(visibleBodies);
+
+  if (state.naturalSort) {
+    bodiesArray.sort((a, b) => {
+      const indexA = state.naturalOrder.indexOf(a);
+      const indexB = state.naturalOrder.indexOf(b);
+
+      if (indexA !== -1 && indexB !== -1) return indexA - indexB;
+      if (indexA !== -1) return -1;
+      if (indexB !== -1) return 1;
+      return a.localeCompare(b);
+    });
+  } else {
+    bodiesArray.sort();
+  }
+
+  bodiesArray.forEach((body) => {
+    const option = new Option(body, body);
+    planetSelect.add(option);
+  });
+
+  if (
+    Array.from(planetSelect.options).some(
+      (option) => option.value === currentValue
+    )
+  ) {
+    planetSelect.value = currentValue;
+  } else {
+    planetSelect.selectedIndex = 0;
+    commandLog("NOTICE: Previous selection no longer available", "system");
+  }
+}
+
+// =====================
+// INITIALIZATION
+// =====================
+function initializeFilters() {
   Object.keys(state.categories).forEach((category) => {
     const checkbox = document.getElementById(category);
     if (checkbox) {
@@ -250,8 +294,7 @@ function initializerFilters() {
     }
   });
 
-  updateDropdownOptions(); // populate dropdown
-
+  updateDropdownOptions();
   commandLog("FILTER SYSTEM INITIALIZED", "system");
 
   const naturalSortCheckbox = document.getElementById("naturalSort");
@@ -260,45 +303,30 @@ function initializerFilters() {
   }
 }
 
-// function to handle commander center style logging
-function commandLog(message, type = "info") {
-  // log display area
-  const logEntries = document.getElementById("log-entries");
+function initializeSliders() {
+  const sliders = ["custom-multiplier", "custom-mass", "custom-radius"];
 
-  // create a new log entry with timestamp
-  const logEntry = document.createElement("div");
-  const timestamp = new Date().toLocaleTimeString("en-US", {
-    hour12: false, // set to miliary time
-  });
-
-  // styling class and build message
-  logEntry.className = `log-entry log-${type}`;
-  logEntry.innerHTML = `<span class="log-timestamp">[${timestamp}]</span> <span class="log-message">${message}</span>`;
-
-  // display and scroll view
-  logEntries.appendChild(logEntry);
-  logEntries.scrollTop = logEntries.scrollHeight;
-
-  // store into history
-  state.logHistory.push({
-    timestamp,
-    message,
-    type,
+  sliders.forEach((sliderId) => {
+    const slider = document.getElementById(sliderId);
+    if (slider) {
+      slider.addEventListener("input", handleSliderInput);
+    }
   });
 }
 
-// initialize the calculator when the DOM is ready
+// Initialize when DOM is ready
 document.addEventListener("DOMContentLoaded", () => {
-  // references to input elements
   const lbsInput = document.getElementById("user-weight");
   const kgsInput = document.getElementById("user-weight-kgs");
   const planetSelect = document.getElementById("planets");
+  const advancedModeToggle = document.getElementById("advanced-mode");
+  const resetButton = document.getElementById("reset-button");
+  const clearLogButton = document.getElementById("clear-log");
 
-  // Initialize with a welcome message
   commandLog("ASTRO WEIGHT CALCULATOR SYSTEMS INITIALIZING...", "system");
   commandLog("ALL SYSTEMS NOMINAL", "success");
 
-  // Handle pounds input with enhanced logging
+  // Weight conversion handlers
   lbsInput.addEventListener("input", (e) => {
     const lbs = parseFloat(e.target.value);
     if (!isNaN(lbs)) {
@@ -311,7 +339,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Handle kilograms input with enhanced logging
   kgsInput.addEventListener("input", (e) => {
     const kgs = parseFloat(e.target.value);
     if (!isNaN(kgs)) {
@@ -324,7 +351,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Handle planet selection changes
+  // Planet selection handler
   planetSelect.addEventListener("change", () => {
     const selectedPlanet = planetSelect.value;
     if (selectedPlanet) {
@@ -335,7 +362,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Set up calculate button with enhanced logging
+  // Calculate button handler
   const calculateButton = document.getElementById("calculate-button");
   if (calculateButton) {
     calculateButton.onclick = (e) => {
@@ -344,6 +371,14 @@ document.addEventListener("DOMContentLoaded", () => {
     };
   }
 
-  // initialize the filter system
-  initializerFilters();
+  // Initialize advanced mode toggle
+  if (advancedModeToggle) {
+    advancedModeToggle.addEventListener("change", handleAdvancedModeToggle);
+  }
+
+  // Initialize sliders
+  initializeSliders();
+
+  // Initialize filters
+  initializeFilters();
 });
