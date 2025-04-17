@@ -323,6 +323,105 @@ document.addEventListener("DOMContentLoaded", () => {
   const resetButton = document.getElementById("reset-button");
   const clearLogButton = document.getElementById("clear-log");
 
+  // Clear Log button handler
+  if (clearLogButton) {
+    clearLogButton.addEventListener("click", (e) => {
+      e.preventDefault();
+      const logEntries = document.getElementById("log-entries");
+      logEntries.innerHTML = ""; // Clear all log entries
+      state.logHistory = []; // Reset the log history array
+      commandLog("MISSION CONTROL LOG CLEARED", "system");
+      commandLog("SYSTEM RESET COMPLETE", "success");
+    });
+  }
+
+  // Reset button handler
+  if (resetButton) {
+    resetButton.addEventListener("click", (e) => {
+      e.preventDefault();
+      commandLog("INITIATING SYSTEM RESET...", "processing");
+      
+      // Reset weight inputs
+      lbsInput.value = "";
+      kgsInput.value = "";
+      
+      // Reset planet selection
+      planetSelect.selectedIndex = 0;
+      
+      // Reset all filters to checked (default state)
+      Object.keys(state.activeFilters).forEach(category => {
+        const checkbox = document.getElementById(category);
+        if (checkbox) {
+          checkbox.checked = true;
+          state.activeFilters[category] = true;
+        }
+      });
+      
+      // Reset natural sort checkbox
+      const naturalSortCheckbox = document.getElementById("naturalSort");
+      if (naturalSortCheckbox) {
+        naturalSortCheckbox.checked = false;
+        state.naturalSort = false;
+      }
+      
+      // Turn off advanced mode if it's on
+      if (advancedModeToggle && advancedModeToggle.checked) {
+        advancedModeToggle.checked = false;
+        const advancedInputs = document.querySelector(".advanced-inputs");
+        const basicInputs = document.querySelector(".basic-inputs");
+        const customMassInput = document.getElementById("custom-mass");
+        const customRadiusInput = document.getElementById("custom-radius");
+        
+        if (advancedInputs && basicInputs) {
+          advancedInputs.style.opacity = "0.5";
+          advancedInputs.style.pointerEvents = "none";
+          basicInputs.style.opacity = "1";
+          basicInputs.style.pointerEvents = "auto";
+        }
+        
+        if (customMassInput) customMassInput.disabled = true;
+        if (customRadiusInput) customRadiusInput.disabled = true;
+      }
+      
+      // Reset all sliders to default values
+      const sliders = ["custom-multiplier", "custom-mass", "custom-radius"];
+      sliders.forEach(sliderId => {
+        const slider = document.getElementById(sliderId);
+        const output = document.getElementById(`${sliderId}-value`);
+        if (slider) {
+          slider.value = 1; // Reset to default value
+          
+          // Update the displayed value
+          if (output) {
+            let displayValue = "1";
+            switch (sliderId) {
+              case "custom-multiplier":
+                displayValue = "1 Earth gravity";
+                break;
+              case "custom-mass":
+                displayValue = "1 Earth mass";
+                break;
+              case "custom-radius":
+                displayValue = "1 Earth radius";
+                break;
+            }
+            output.textContent = displayValue;
+          }
+        }
+      });
+      
+      // Clear any output text
+      const outputElement = document.getElementById("output");
+      if (outputElement) outputElement.innerText = "";
+      
+      // Update the dropdown options to reflect the reset filters
+      updateDropdownOptions();
+      
+      commandLog("ALL INPUTS RESET TO DEFAULT VALUES", "success");
+      commandLog("SYSTEM READY", "system");
+    });
+  }
+
   commandLog("ASTRO WEIGHT CALCULATOR SYSTEMS INITIALIZING...", "system");
   commandLog("ALL SYSTEMS NOMINAL", "success");
 

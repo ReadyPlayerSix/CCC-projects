@@ -420,6 +420,14 @@ fieldset.terminal-style .entity-select-group {
   flex: 1;/* Takes up available space */
 }
 
+/* Flex container for horizontal alignment */
+.flex-container {
+  display: flex;
+  align-items: center;
+  gap: 15px; /* Space between elements */
+  width: 100%;
+}
+
 fieldset.terminal-style .entity-select-group select {
   width: 100%;
   background-color: var(--terminal-bg-color);
