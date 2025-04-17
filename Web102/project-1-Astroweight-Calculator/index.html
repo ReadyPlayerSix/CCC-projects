@@ -145,129 +145,57 @@
               </div>
             </div>
 
-            <!--=== Custom Entity Creation ===-->
+            <!--=== Celestial Body Fact Sheet ===-->
             <div class="terminal-panel">
-              <div class="terminal-panel-header">Entity Creator</div>
+              <div class="terminal-panel-header">Celestial Body Fact Sheet</div>
               <div class="terminal-panel-content">
-                <fieldset class="custom-entity-inputs terminal-style">
-                  <legend>Custom Entity Creation:</legend>
+                <fieldset class="fact-sheet terminal-style">
+                  <legend>ENTITY DETAILS:</legend>
                   
-                  <!-- Control Row -->
-                  <div class="entity-controls-row">
-                    <!-- Name Input -->
-                    <div class="entity-name-input">
-                      <label for="custom-entity">Entity name:</label>
-                      <input
-                        id="custom-entity"
-                        type="text"
-                        placeholder="Enter name"
-                        required
-                      />
-                    </div>
-    
-                    <!-- Mode Toggle and Add Button -->
-                    <div class="control-buttons">
-                      <div class="mode-toggle">
-                        <input type="checkbox" id="advanced-mode" />
-                        <label for="advanced-mode">Advanced Mode</label>
+                  <!-- Fact Sheet Display -->
+                  <div class="fact-sheet-container">
+                    <!-- Left side with wireframe visualization -->
+                    <div class="visualization-container">
+                      <div id="entity-wireframe" class="wireframe-display">
+                        <!-- Wireframe will be displayed here -->
+                        <div class="placeholder-message">Select an entity to view details</div>
                       </div>
-                      <button id="add-custom">Add Entity</button>
                     </div>
-                  </div>
-                  <br />
-    
-                  <!-- Basic Gravity Controls -->
-                  <div class="basic-inputs">
-                    <!-- Gravity Slider -->
-                    <div class="slider-container multiplier-slider">
-                      <label for="custom-multiplier"
-                        >Surface Gravity (relative to Earth)</label
-                      >
-                      <div class="slider-track">
-                        <input
-                          type="range"
-                          id="custom-multiplier"
-                          min="0"
-                          max="100"
-                          value="1"
-                          step="1"
-                        />
-                        <div class="slider-labels">
-                          <span class="label" style="left: 0%">Moon (0.166)</span>
-                          <span class="label" style="left: 25%">Mars (0.377)</span>
-                          <span class="label" style="left: 50%">Earth (1.0)</span>
-                          <span class="label" style="left: 75%"
-                            >Neptune (1.14)</span
-                          >
-                          <span class="label" style="left: 100%"
-                            >Jupiter (2.4)</span
-                          >
+                    
+                    <!-- Right side with facts -->
+                    <div class="facts-container">
+                      <div id="entity-facts" class="facts-list">
+                        <!-- Facts will be populated here -->
+                        <div class="fact-item">
+                          <span class="fact-label">DIAMETER:</span>
+                          <span class="fact-value" id="fact-diameter">--</span>
+                        </div>
+                        <div class="fact-item">
+                          <span class="fact-label">GRAVITY:</span>
+                          <span class="fact-value" id="fact-gravity">--</span>
+                        </div>
+                        <div class="fact-item">
+                          <span class="fact-label">DAY LENGTH:</span>
+                          <span class="fact-value" id="fact-day-length">--</span>
+                        </div>
+                        <div class="fact-item">
+                          <span class="fact-label">YEAR LENGTH:</span>
+                          <span class="fact-value" id="fact-year-length">--</span>
+                        </div>
+                        <div class="fact-item">
+                          <span class="fact-label">TEMPERATURE:</span>
+                          <span class="fact-value" id="fact-temperature">--</span>
+                        </div>
+                        <div class="fact-item">
+                          <span class="fact-label">MOONS:</span>
+                          <span class="fact-value" id="fact-moons">--</span>
+                        </div>
+                        <div class="fact-item fun-fact">
+                          <span class="fact-label">FUN FACT:</span>
+                          <span class="fact-value" id="fact-fun-fact">--</span>
                         </div>
                       </div>
-                      <output for="custom-multiplier" id="multiplier-value"
-                        >1.0 Earth gravity</output
-                      >
                     </div>
-                  </div>
-                  <br />
-    
-                  <!-- Advanced Controls -->
-                  <div
-                    class="advanced-inputs"
-                    style="opacity: 0.5; pointer-events: none"
-                  >
-                    <!-- Mass and Radius Sliders -->
-                    <div class="slider-container mass-slider">
-                      <label for="custom-mass">Mass (relative to Earth)</label>
-                      <div class="slider-track">
-                        <input
-                          type="range"
-                          id="custom-mass"
-                          min="0"
-                          max="100"
-                          value="1"
-                          step="1"
-                          disabled
-                        />
-                        <div class="slider-labels">
-                          <span class="label" style="left: 0%">Moon</span>
-                          <span class="label" style="left: 25%">Mars</span>
-                          <span class="label" style="left: 50%">Earth</span>
-                          <span class="label" style="left: 75%">Neptune</span>
-                          <span class="label" style="left: 100%">Jupiter</span>
-                        </div>
-                      </div>
-                      <output for="custom-mass" id="mass-value"
-                        >1 Earth mass</output
-                      >
-                    </div>
-                    <br />
-    
-                    <div class="slider-container radius-slider">
-                      <label for="custom-radius">Radius (relative to Earth)</label>
-                      <div class="slider-track">
-                        <input
-                          type="range"
-                          id="custom-radius"
-                          min="0"
-                          max="100"
-                          value="1"
-                          step="1"
-                          disabled
-                        />
-                        <div class="slider-labels">
-                          <span class="label" style="left: 0%">Moon</span>
-                          <span class="label" style="left: 25%">Mars</span>
-                          <span class="label" style="left: 50%">Earth</span>
-                          <span class="label" style="left: 75%">Neptune</span>
-                          <span class="label" style="left: 100%">Jupiter</span>
-                        </div>
-                      </div>
-                      <output for="custom-radius" id="radius-value"
-                        >1 Earth Radius</output
-                      >
-                    </div>
-                    <br />
                   </div>
                 </fieldset>
               </div>
@@ -280,7 +208,7 @@
         <!--================-->
         <section class="output-section">
           <div class="terminal-panel">
-            <div class="terminal-panel-header right-aligned">
+            <div class="terminal-panel-header">
               A <a href="https://learn.cccareers.org" target="_blank">Creating Coding Careers</a> Project | UI/UX Design by Claro Runtal
             </div>
             <div class="terminal-panel-content visually-hidden">

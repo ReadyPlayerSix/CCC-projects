@@ -98,6 +98,106 @@ const state = {
     "Pluto",
   ],
   logHistory: [],
+  // New celestial body facts data
+  celestialBodyFacts: {
+    "Mercury": {
+      diameter: "4,879 km",
+      gravity: "3.7 m/s²",
+      dayLength: "58.6 Earth days",
+      yearLength: "88 Earth days",
+      temperature: "-173°C to 427°C",
+      moons: "0",
+      funFact: "Mercury's surface resembles our Moon with heavy cratering."
+    },
+    "Venus": {
+      diameter: "12,104 km",
+      gravity: "8.87 m/s²",
+      dayLength: "243 Earth days",
+      yearLength: "225 Earth days",
+      temperature: "462°C",
+      moons: "0",
+      funFact: "Venus rotates in the opposite direction to most planets."
+    },
+    "Earth": {
+      diameter: "12,756 km",
+      gravity: "9.8 m/s²",
+      dayLength: "24 hours",
+      yearLength: "365.25 days",
+      temperature: "-88°C to 58°C",
+      moons: "1",
+      funFact: "Earth is the only known planet to support life."
+    },
+    "Mars": {
+      diameter: "6,792 km",
+      gravity: "3.7 m/s²",
+      dayLength: "24.6 hours",
+      yearLength: "687 Earth days",
+      temperature: "-153°C to 20°C",
+      moons: "2",
+      funFact: "Mars has the largest dust storms in the solar system."
+    },
+    "Jupiter": {
+      diameter: "142,984 km",
+      gravity: "23.1 m/s²",
+      dayLength: "9.9 hours",
+      yearLength: "11.9 Earth years",
+      temperature: "-108°C",
+      moons: "79",
+      funFact: "Jupiter's Great Red Spot is a storm that has lasted over 300 years."
+    },
+    "Saturn": {
+      diameter: "120,536 km",
+      gravity: "9.0 m/s²",
+      dayLength: "10.7 hours",
+      yearLength: "29.5 Earth years",
+      temperature: "-138°C",
+      moons: "82",
+      funFact: "Saturn's rings are made mostly of ice chunks and are over 270,000 km wide."
+    },
+    "Uranus": {
+      diameter: "51,118 km",
+      gravity: "8.7 m/s²",
+      dayLength: "17.2 hours",
+      yearLength: "84 Earth years",
+      temperature: "-195°C",
+      moons: "27",
+      funFact: "Uranus rotates on its side with an axial tilt of about 98 degrees."
+    },
+    "Neptune": {
+      diameter: "49,528 km",
+      gravity: "11.0 m/s²",
+      dayLength: "16.1 hours",
+      yearLength: "165 Earth years",
+      temperature: "-214°C",
+      moons: "14",
+      funFact: "Neptune has the strongest winds in the solar system, reaching 2,100 km/h."
+    },
+    "Pluto": {
+      diameter: "2,376 km",
+      gravity: "0.7 m/s²",
+      dayLength: "153.3 hours",
+      yearLength: "248 Earth years",
+      temperature: "-229°C",
+      moons: "5",
+      funFact: "Pluto was reclassified as a dwarf planet in 2006."
+    },
+    "Sun": {
+      diameter: "1,392,700 km",
+      gravity: "274 m/s²",
+      temperature: "5,500°C (surface), 15,000,000°C (core)",
+      composition: "Hydrogen (73%), Helium (25%), Other (2%)",
+      age: "4.6 billion years",
+      funFact: "The Sun contains 99.86% of the mass in the Solar System."
+    },
+    "Moon": {
+      diameter: "3,475 km",
+      gravity: "1.6 m/s²",
+      dayLength: "29.5 Earth days",
+      yearLength: "27.3 Earth days",
+      temperature: "-173°C to 127°C",
+      funFact: "The Moon is moving away from Earth at a rate of 3.8 cm per year."
+    }
+  }
 };
 
 // =====================
@@ -156,6 +256,139 @@ function handleClickEvent(e) {
     if (isNaN(weight))
       commandLog("ERROR: Please enter a valid weight", "error");
     if (!planetName) commandLog("ERROR: Please select a planet", "error");
+  }
+}
+
+// Function to update the fact sheet when a celestial body is selected
+function updateFactSheet(celestialBodyName) {
+  // Get the facts for the selected body
+  const facts = state.celestialBodyFacts[celestialBodyName];
+  
+  // If no facts are found, show a placeholder
+  if (!facts) {
+    document.getElementById("fact-diameter").textContent = "--";
+    document.getElementById("fact-gravity").textContent = "--";
+    document.getElementById("fact-day-length").textContent = "--";
+    document.getElementById("fact-year-length").textContent = "--";
+    document.getElementById("fact-temperature").textContent = "--";
+    document.getElementById("fact-moons").textContent = "--";
+    document.getElementById("fact-fun-fact").textContent = "--";
+    
+    // Show placeholder in visualization area
+    const wireframeDisplay = document.getElementById("entity-wireframe");
+    wireframeDisplay.innerHTML = '<div class="placeholder-message">Select an entity to view details</div>';
+    return;
+  }
+  
+  // Update the fact sheet with data from the selected celestial body
+  document.getElementById("fact-diameter").textContent = facts.diameter || "--";
+  document.getElementById("fact-gravity").textContent = facts.gravity || "--";
+  document.getElementById("fact-day-length").textContent = facts.dayLength || "--";
+  document.getElementById("fact-year-length").textContent = facts.yearLength || "--";
+  document.getElementById("fact-temperature").textContent = facts.temperature || "--";
+  document.getElementById("fact-moons").textContent = facts.moons || "--";
+  document.getElementById("fact-fun-fact").textContent = facts.funFact || "--";
+  
+  // Display a simple wireframe based on the celestial body type
+  createWireframeVisualization(celestialBodyName);
+  
+  // Log the action
+  commandLog(`FETCHING DATA FOR: ${celestialBodyName.toUpperCase()}`, "processing");
+  commandLog(`FACT SHEET UPDATED: ${celestialBodyName.toUpperCase()}`, "success");
+}
+
+// Function to create a simple wireframe visualization
+function createWireframeVisualization(celestialBodyName) {
+  const wireframeDisplay = document.getElementById("entity-wireframe");
+  
+  // Clear any existing content
+  wireframeDisplay.innerHTML = '';
+  
+  // Create a simple SVG wireframe based on the celestial body type
+  let svg = '';
+  const bodyCategory = state.bodyCategories[celestialBodyName] ? state.bodyCategories[celestialBodyName][0] : '';
+  
+  switch(bodyCategory) {
+    case 'stars':
+      // Create a sun wireframe with rays
+      svg = `
+        <svg viewBox="0 0 100 100" class="wireframe-svg">
+          <circle cx="50" cy="50" r="30" fill="none" stroke="#00ff00" stroke-width="1"/>
+          <line x1="50" y1="10" x2="50" y2="0" stroke="#00ff00" stroke-width="1"/>
+          <line x1="50" y1="90" x2="50" y2="100" stroke="#00ff00" stroke-width="1"/>
+          <line x1="10" y1="50" x2="0" y2="50" stroke="#00ff00" stroke-width="1"/>
+          <line x1="90" y1="50" x2="100" y2="50" stroke="#00ff00" stroke-width="1"/>
+          <line x1="22" y1="22" x2="15" y2="15" stroke="#00ff00" stroke-width="1"/>
+          <line x1="78" y1="22" x2="85" y2="15" stroke="#00ff00" stroke-width="1"/>
+          <line x1="22" y1="78" x2="15" y2="85" stroke="#00ff00" stroke-width="1"/>
+          <line x1="78" y1="78" x2="85" y2="85" stroke="#00ff00" stroke-width="1"/>
+        </svg>
+      `;
+      break;
+      
+    case 'gasGiants':
+      // Create a planet with bands
+      svg = `
+        <svg viewBox="0 0 100 100" class="wireframe-svg">
+          <circle cx="50" cy="50" r="40" fill="none" stroke="#00ff00" stroke-width="1"/>
+          <ellipse cx="50" cy="50" rx="40" ry="10" fill="none" stroke="#00ff00" stroke-width="0.5"/>
+          <ellipse cx="50" cy="40" rx="32" ry="8" fill="none" stroke="#00ff00" stroke-width="0.5"/>
+          <ellipse cx="50" cy="60" rx="32" ry="8" fill="none" stroke="#00ff00" stroke-width="0.5"/>
+        </svg>
+      `;
+      break;
+      
+    case 'iceGiants':
+      // Create an ice giant with a tilted ring
+      svg = `
+        <svg viewBox="0 0 100 100" class="wireframe-svg">
+          <circle cx="50" cy="50" r="30" fill="none" stroke="#00ff00" stroke-width="1"/>
+          <ellipse cx="50" cy="50" rx="45" ry="10" fill="none" stroke="#00ff00" stroke-width="0.5" transform="rotate(45 50 50)"/>
+        </svg>
+      `;
+      break;
+      
+    case 'dwarfPlanets':
+      // Create a small rocky planet
+      svg = `
+        <svg viewBox="0 0 100 100" class="wireframe-svg">
+          <circle cx="50" cy="50" r="20" fill="none" stroke="#00ff00" stroke-width="1"/>
+          <circle cx="60" cy="40" r="5" fill="none" stroke="#00ff00" stroke-width="0.5"/>
+          <circle cx="35" cy="55" r="3" fill="none" stroke="#00ff00" stroke-width="0.5"/>
+        </svg>
+      `;
+      break;
+      
+    case 'naturalSatellites':
+      // Create a moon with craters
+      svg = `
+        <svg viewBox="0 0 100 100" class="wireframe-svg">
+          <circle cx="50" cy="50" r="25" fill="none" stroke="#00ff00" stroke-width="1"/>
+          <circle cx="40" cy="40" r="5" fill="none" stroke="#00ff00" stroke-width="0.5"/>
+          <circle cx="65" cy="45" r="3" fill="none" stroke="#00ff00" stroke-width="0.5"/>
+          <circle cx="55" cy="65" r="4" fill="none" stroke="#00ff00" stroke-width="0.5"/>
+        </svg>
+      `;
+      break;
+      
+    default:
+      // Create a default terrestrial planet
+      svg = `
+        <svg viewBox="0 0 100 100" class="wireframe-svg">
+          <circle cx="50" cy="50" r="30" fill="none" stroke="#00ff00" stroke-width="1"/>
+          <path d="M 30 55 Q 40 65, 50 60 T 70 55" fill="none" stroke="#00ff00" stroke-width="0.5"/>
+          <path d="M 25 40 Q 40 35, 60 40 T 75 45" fill="none" stroke="#00ff00" stroke-width="0.5"/>
+        </svg>
+      `;
+  }
+  
+  // Insert the SVG into the display container
+  wireframeDisplay.innerHTML = svg;
+  
+  // Add a glow effect
+  const svgElement = wireframeDisplay.querySelector('.wireframe-svg');
+  if (svgElement) {
+    svgElement.style.filter = 'drop-shadow(0 0 5px rgba(0, 255, 0, 0.7))';
   }
 }
 
@@ -458,6 +691,12 @@ document.addEventListener("DOMContentLoaded", () => {
         `CELESTIAL BODY SELECTED: ${selectedPlanet.toUpperCase()}`,
         "info"
       );
+      
+      // Update the fact sheet with the selected celestial body's information
+      updateFactSheet(selectedPlanet);
+    } else {
+      // Reset the fact sheet if no body is selected
+      updateFactSheet(""); 
     }
   });
 
@@ -480,4 +719,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Initialize filters
   initializeFilters();
+  
+  // Initialize the fact sheet
+  updateFactSheet("");
 });

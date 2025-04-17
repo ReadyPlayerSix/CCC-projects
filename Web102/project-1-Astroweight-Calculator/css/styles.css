@@ -696,6 +696,109 @@ fieldset.terminal-style input[type="checkbox"]:checked + label::before {
   text-shadow: 0 0 8px rgba(0, 255, 0, 0.9);
 }
 
+/* Fact Sheet Styling */
+.fact-sheet-container {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  height: 100%;
+}
+
+.visualization-container {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+  border: 1px solid rgba(0, 255, 0, 0.3);
+  position: relative;
+}
+
+.wireframe-display {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.placeholder-message {
+  color: rgba(0, 255, 0, 0.5);
+  text-align: center;
+  font-style: italic;
+}
+
+.facts-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.facts-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.fact-item {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px dashed rgba(0, 255, 0, 0.3);
+  padding-bottom: 5px;
+}
+
+.fact-label {
+  font-weight: bold;
+  color: var(--terminal-text-color);
+}
+
+.fact-value {
+  color: #00cc00;
+  text-shadow: 0 0 5px rgba(0, 255, 0, 0.5);
+}
+
+.fun-fact {
+  margin-top: 10px;
+  flex-direction: column;
+}
+
+.fun-fact .fact-label {
+  margin-bottom: 5px;
+}
+
+.fun-fact .fact-value {
+  padding-left: 10px;
+  font-style: italic;
+}
+
+/* Wireframe SVG styling */
+.wireframe-svg {
+  width: 100%;
+  height: 100%;
+  max-width: 200px;
+  max-height: 200px;
+  filter: drop-shadow(0 0 8px rgba(0, 255, 0, 0.7));
+}
+
+.wireframe-svg path,
+.wireframe-svg line,
+.wireframe-svg circle,
+.wireframe-svg ellipse {
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+}
+
+@keyframes wireframe-glow {
+  0% { filter: drop-shadow(0 0 2px rgba(0, 255, 0, 0.7)); }
+  50% { filter: drop-shadow(0 0 5px rgba(0, 255, 0, 0.9)); }
+  100% { filter: drop-shadow(0 0 2px rgba(0, 255, 0, 0.7)); }
+}
+
+.wireframe-svg {
+  animation: wireframe-glow 4s ease-in-out infinite;
+}
+
 /* Terminal credits styling */
 .terminal-credits {
   margin-top: 10px;
