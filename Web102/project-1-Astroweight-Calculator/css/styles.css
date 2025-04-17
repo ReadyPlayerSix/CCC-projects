@@ -1,10 +1,13 @@
+@import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+
 /* styles.css */
 
 :root {
   /* define terminal style theme variables */
-  --terminal-font-family: "Courier New", monospace;
-  --terminal-font-size: 14px;
-  --terminal-font-weight: normal;
+  --terminal-font-family: "VT323", "Courier New", monospace;
+  --terminal-font-size: 20px;
+  --terminal-font-weight: bold;
+  --terminial-line-height: 1.5;
   --terminal-text-color: #00ff00;
   --terminal-bg-color: #032e23;
 }
@@ -18,34 +21,37 @@ html {
 
 /* basic reset and container styling */
 body {
-  font-family: "Courier New", monospace;
+  font-family: var(--terminal-font-family);
   margin: 0;
-  padding: 20px;
-  /* background-color: #6a8797; */
+  padding: 0; /* Remove padding */
+  height: 100vh; /* Full viewport height */
+  overflow: hidden; /* Prevents scrolling on the body */
   background-color: var(--terminal-bg-color);
-}
-
-/* Two-column layout container */
-.calculator-container {
-  display: flex;
-  gap: 20px;
-  max-width: 1800px; /* Adjust based on your needs */
-  margin: 0 auto;
-  padding: 5px;
-}
-
-/* Left column: Input section */
-.input-section {
-  flex: 1;
-  min-width: 300px; /* Minimum width to prevent squishing */
-}
-
-/* Right column: Output section */
-.output-section {
-  flex: 1;
-  min-width: 300px;
   display: flex;
   flex-direction: column;
+}
+
+main {
+  flex: 1; /* Fill available space */
+  display: flex;
+  flex-direction: column;
+  padding: 0px; /* Small padding from the edge of the screen */
+}
+
+.output-section::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(rgba(0, 255, 0, 0.08) 50%,
+      rgba(0, 0, 0, 0) 50%);
+  background-size: 100% 4px;
+  pointer-events: none;
+  opacity: 0.3; /* Increased from 0.15 for more visibility */
+  z-index: 2;
+  pointer-events: none; /* Ensures the overlay doesn't interfere with interactions */
 }
 
 .visually-hidden {
@@ -61,8 +67,22 @@ body {
 
 /* Make the log section fill available height */
 #weight-log-section {
-  flex-grow: 1;
-  min-height: 400px; /* Minimum height to ensure visibility */
+  margin-top: 17px;
+  background-color: var(--terminal-bg-color);
+  color: #00ff00;
+  padding: 0px;
+  border-radius: 2px;
+  font-size: var(--terminal-font-size);
+  font-weight: var(--terminal-font-weight);
+  font-family: var(--terminal-font-family);
+  height: 300px; /* Taller display area */
+  overflow-y: auto;
+  /*box-shadow: 0 0 15px rgba(0, 255, 0, 0.3); /* Green glow effect */
+  flex: 1;
+    display: flex;
+    flex-direction: column;
+    margin-top: 0;
+    height: auto;/* Let it fill container instead of fixed height */
 }
 
 /* Responsive layout for smaller screens */
@@ -96,6 +116,11 @@ body {
 
 /* input fields styling */
 input[type="number"] {
+  background-color: var(--terminal-bg-color);
+  color: var(--terminal-text-color);
+  font-family: var(--terminal-font-family);
+  font-size: var(--terminal-font-size);
+  font-weight: var(--terminal-font-weight);
   padding: 8px;
   border: 1px solid #ccc;
   border-radius: 4px;
@@ -103,6 +128,11 @@ input[type="number"] {
 }
 
 .weight-input-container {
+  font-family: var(--terminal-font-family);
+  font-size: var(--terminal-font-size);
+  font-weight: var(--terminal-font-weight);
+  color: var(--terminal-text-color);
+  background-color: var(--terminal-bg-color);
   display: flex;
   align-items: center;
   gap: 15px; /* Creates space between elements */
@@ -116,7 +146,7 @@ input[type="number"] {
 
 .weight-separator {
   color: #00ff00; /* Makes the "or" text visible */
-  font-family: "Courier New", monospace;
+  font-family: var(--terminal-font-family);
 }
 
 /* select dropdown styling */
@@ -167,18 +197,17 @@ button:active {
   background-color: var(--terminal-bg-color);
   color: #00ff00;
   padding: 15px;
-  border-radius: 2px;
-  font-size: 14px;
-  font-weight: normal;
-  font-family: "Courier New", monospace;
-  height: 200px;
+  border-radius: 0px;
+  font-size: var(--terminal-font-size);
+  font-weight: var(--terminal-font-weight);
+  font-family: var(--terminal-font-family);
   overflow-y: auto;
 }
 
 /* Log entry styling */
 .log-entry {
   margin: 12px 0;
-  font-size: 14px;
+  font-size: var(--terminal-font-size);
 }
 
 .log-success::before,
@@ -216,7 +245,7 @@ button:active {
   padding: 15px;
   background-color: #e9ecef;
   border-radius: 4px;
-  font-size: 18px;
+  font-size: var(--terminal-font-size);
   text-align: center;
 }
 
@@ -230,7 +259,7 @@ fieldset {
 
 legend {
   padding: 0 10px;
-  font-weight: bold;
+  font-weight: var(--terminal-font-weight);
 }
 
 fieldset.terminal-style {
@@ -245,19 +274,60 @@ fieldset.terminal-style ::placeholder {
   color: var(--terminal-text-color);
 }
 
+/* Terminal-style select dropdown */
+fieldset.terminal-style select {
+  background-color: var(--terminal-bg-color);
+  color: var(--terminal-text-color);
+  border: 1px solid var(--terminal-text-color);
+  font-family: var(--terminal-font-family);
+  font-size: var(--terminal-font-size);
+  padding: 5px 8px;
+  width: 100%;
+  border-radius: 0;
+  appearance: none;
+  /* Remove default appearance */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  position: relative;
+}
+
+/* Add dropdown arrow */
+fieldset.terminal-style .select-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+fieldset.terminal-style .select-wrapper::after {
+  content: "▼";
+  color: var(--terminal-text-color);
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  font-size: var(--terminal-font-size);
+}
+
+/* Option styling */
+fieldset.terminal-style select option {
+  background-color: var(--terminal-bg-color);
+  color: var(--terminal-text-color);
+  padding: 8px;
+}
+
 fieldset.terminal-style legend {
   background-color: var(--terminal-bg-color);
   color: #00ff00;
   padding: 0 10px;
-  font-size: 14px;
-  font-weight: normal;
-  font-family: "Courier New", monospace;
+  font-size: var(--terminal-font-size);
+  font-weight: var(--terminal-font-weight);
+  font-family: var(--terminal-font-family);
 }
 
 fieldset.terminal-style label {
-  font-size: 14px;
-  font-weight: normal;
-  font-family: "Courier New", monospace;
+  font-size: var(--terminal-font-size);
+  font-weight: var(--terminal-font-weight);
+  font-family: var(--terminal-font-family);
 }
 
 fieldset.terminal-style input[type="number"] {
@@ -332,6 +402,92 @@ fieldset.terminal-style input[type="checkbox"]:hover + label::before {
   color: #00cc00; /* brighter green */
 }
 
+/* Terminal-style select dropdown */
+fieldset.terminal-style .entity-select-group {
+  position: relative;
+  width: 100%;
+  max-width: 300px;
+}
+
+.flex-container {
+  display: flex;
+  align-items: center;
+  gap: 15px; /* Space between elements */
+  width: 100%;
+}
+
+.entity-select-group {
+  flex: 1;/* Takes up available space */
+}
+
+fieldset.terminal-style .entity-select-group select {
+  width: 100%;
+  background-color: var(--terminal-bg-color);
+  color: var(--terminal-text-color);
+  border: none;
+  padding: 5px 8px;
+  font-family: var(--terminal-font-family);
+  font-size: var(--terminal-font-size);
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  box-shadow: none;
+  outline: none;
+  cursor: pointer;
+}
+
+/* Add brackets around the select */
+fieldset.terminal-style .entity-select-group::before {
+  content: "[";
+  color: var(--terminal-text-color);
+  position: absolute;
+  left: -10px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: var(--terminal-font-size);
+}
+
+fieldset.terminal-style .entity-select-group::after {
+  content: "]";
+  color: var(--terminal-text-color);
+  position: absolute;
+  right: -10px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: var(--terminal-font-size);
+}
+
+/* Custom dropdown arrow */
+fieldset.terminal-style .entity-select-group select::-ms-expand {
+  display: none;
+}
+
+fieldset.terminal-style .entity-select-group::before {
+  content: "[";
+  color: var(--terminal-text-color);
+  position: absolute;
+  left: -10px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+fieldset.terminal-style .entity-select-group::after {
+  content: "▼]";
+  color: var(--terminal-text-color);
+  position: absolute;
+  right: -10px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+/* Option styling */
+fieldset.terminal-style select option {
+  background-color: var(--terminal-bg-color);
+  color: var(--terminal-text-color);
+  padding: 8px;
+}
+
+/* Entity controls styling */
 .entity-controls-row {
   display: flex;
   justify-content: space-between;
@@ -366,17 +522,189 @@ fieldset.terminal-style input[type="checkbox"]:hover + label::before {
   gap: 8px;
 }
 
-/* Preserve existing calculator container styles */
+/* Two-column container - full screen layout */
 .calculator-container {
   display: flex;
-  gap: 20px;
-  max-width: 1800px;
-  margin: 0 auto;
-  padding: 5px;
+  gap: 0;
+  flex: 1; /* Fill available space in the main element */
+  margin: 0;
+  padding: 0;
+  position: relative;
+  overflow: hidden;
+  border: 3px solid #004400;
+  border-radius: 8px;
+  box-shadow: 
+    0 0 20px rgba(0, 255, 0, 0.4),
+    0 0 40px rgba(0, 255, 0, 0.2),
+    0 0 60px rgba(0, 255, 0, 0.1),
+    inset 0 0 30px rgba(0, 255, 0, 0.15);
+  background-color: rgba(3, 30, 20, 0.8);
 }
 
-.input-section,
-.output-section {
+/* Panel sections for input and output areas */
+.input-section, .output-section {
   flex: 1;
   min-width: 300px;
+  padding: 5px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: auto; /* Add scrollbars if content overflows */
+}
+
+/* Form container to fill height */
+#weight-form.input-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  height: 100%;
+}
+
+/* Add a subtle divider between sections */
+.input-section {
+  border-right: 1px solid rgba(0, 255, 0, 0.3);
+}
+
+.output-section {
+  border-left: 1px solid rgba(0, 255, 0, 0.3);
+}
+
+/* Terminal panel styling - expanded for full-screen layout */
+.terminal-panel {
+  border: 1px solid rgba(0, 255, 0, 0.4);
+  margin-bottom: -1px;
+  position: relative;
+  background-color: rgba(3, 46, 35, 0.7);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Make the last panel in each section fill remaining space */
+.input-section .terminal-panel:last-child,
+.output-section .terminal-panel:last-child {
+  flex: 1;
+  margin-bottom: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.terminal-panel-header {
+  background-color: rgba(0, 255, 0, 0.2);
+  padding: 4px 8px;
+  font-size: var(--terminal-font-size);
+  font-weight: var(--terminal-font-weight);
+  text-transform: uppercase;
+  border-bottom: 1px solid rgba(0, 255, 0, 0.4);
+  font-family: var(--terminal-font-family);
+  color: var(--terminal-text-color);
+}
+
+.terminal-panel-header a {
+  color: var(--terminal-text-color);
+  text-decoration: none;/* Optional: removes the underline */
+}
+
+/* For hover state */
+.terminal-panel-header a:hover {
+  text-decoration: underline;
+  opacity: 1;
+}
+
+.right-aligned {
+  text-align: right;
+}
+
+.terminal-panel-content {
+  padding: 8px;
+  flex: 1; /* Fill available space */
+  overflow: auto; /* Add scrollbars if needed */
+}
+
+/* Adjust fieldsets inside panels to remove redundant borders */
+.terminal-panel-content fieldset.terminal-style {
+  border: none;
+  margin: 0;
+  padding: 10px 5px;
+}
+
+/* Keep the legend styling */
+.terminal-panel-content fieldset.terminal-style legend {
+  padding: 0 0px;
+}
+
+/* CRT curvature effect */
+.calculator-container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(
+    ellipse at center,
+    transparent 40%,      /* Start darkening earlier */
+    rgba(0, 0, 0, 0.3) 65%,  /* Add middle transition */
+    rgba(0, 0, 0, 0.8) 100%  /* Darker corners */
+  );
+  pointer-events: none;
+  z-index: 3;
+  border-radius: 6px;
+}
+
+/* Add scan lines to input section as well */
+.input-section::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(rgba(0, 255, 0, 0.08) 50%,
+      rgba(0, 0, 0, 0) 50%);
+  background-size: 100% 4px;
+  pointer-events: none;
+  opacity: 0.3;
+  z-index: 2;
+  pointer-events: none;
+}
+
+#log-entries {
+  flex: 1;
+  overflow-y: auto;
+}
+
+/* CRT bloom effect for bright elements */
+.terminal-text-color, 
+button, 
+fieldset.terminal-style legend,
+.log-success,
+.terminal-panel-header {
+  text-shadow: 0 0 5px rgba(0, 255, 0, 0.7);
+}
+
+/* Extra pronounced glow for important elements */
+button:hover, 
+fieldset.terminal-style input[type="checkbox"]:checked + label::before {
+  text-shadow: 0 0 8px rgba(0, 255, 0, 0.9);
+}
+
+/* Terminal credits styling */
+.terminal-credits {
+  margin-top: 10px;
+  padding: 5px 10px;
+  text-align: right;
+  font-size: 12px; /* Smaller font size */
+  opacity: 0.7; /* Slightly faded for subtle appearance */
+  color: var(--terminal-text-color);
+  font-family: var(--terminal-font-family);
+}
+
+.terminal-credits a {
+  color: var(--terminal-text-color);
+  text-decoration: none;
+}
+
+.terminal-credits a:hover {
+  text-decoration: underline;
+  opacity: 1;
 }
