@@ -735,6 +735,14 @@ fieldset.terminal-style input[type="checkbox"]:checked + label::before {
   flex-direction: column;
 }
 
+legend {
+  font-size: var(--terminal-font-size);
+  font-weight: var(--terminal-font-weight);
+  color: var(--terminal-text-color);
+  text-transform: uppercase;
+  padding: 0 10px;
+}
+
 .facts-list {
   display: flex;
   flex-direction: column;
